@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import base64,random
 import time,datetime
+import os
+import re
 #libraries to parse the resume pdf files
 from pyresparser import ResumeParser
 from pdfminer3.layout import LAParams, LTTextBox
@@ -147,17 +149,46 @@ def run():
             if resume_data:
                 ## Get the whole resume data
                 resume_text = pdf_reader(save_image_path)
-
                 st.header("**Resume Analysis**")
-                st.success("Hello "+ resume_data['name'])
-                st.subheader("**Your Basic info**")
-                try:
-                    st.text('Name: '+resume_data['name'])
-                    st.text('Email: ' + resume_data['email'])
-                    st.text('Contact: ' + resume_data['mobile_number'])
-                    st.text('Resume pages: '+str(resume_data['no_of_pages']))
-                except:
-                    pass
+
+                # Safely get values from resume_data
+                # name = resume_data.get("name") or "User"
+                filename = os.path.splitext(pdf_file.name)[0]
+
+                # Remove common words
+                filename = re.sub(
+                    r'(?i)(resume|cv|final|updated|latest|copy|version|v\d+)',
+                    '',
+                    filename
+                )
+
+                # Remove numbers
+                filename = re.sub(r'\d+', '', filename)
+
+                # Replace separators
+                filename = re.sub(r'[_\-]+', ' ', filename)
+
+                # Remove extra spaces
+                filename = " ".join(filename.split())
+
+                # Title Case
+                name = filename.title()
+                email = resume_data.get("email") or "N/A"
+                phone = resume_data.get("mobile_number") or "N/A"
+                pages = resume_data.get("no_of_pages") or 0
+
+                # Greeting
+                st.success(f"Hello {name}")
+
+                # Basic Information
+                st.subheader("**Your Basic Info**")
+
+                st.text(f"Name: {name}")
+                st.text(f"Email: {email}")
+                st.text(f"Contact: {phone}")
+                st.text(f"Resume Pages: {pages}")
+
+                
                 cand_level = ''
                 if resume_data['no_of_pages'] == 1:
                     cand_level = "Fresher"
@@ -323,11 +354,11 @@ def run():
 
 
                 ## Interview Preparation Video
-                st.header("**Bonus Video for Interview Tips💡**")
-                interview_vid = random.choice(interview_videos)
-                int_vid_title = fetch_yt_video(interview_vid)
-                st.subheader("✅ **" + int_vid_title + "**")
-                st.video(interview_vid)
+                # st.header("**Bonus Video for Interview Tips💡**")
+                # interview_vid = random.choice(interview_videos)
+                # int_vid_title = fetch_yt_video(interview_vid)
+                # st.subheader("✅ **" + int_vid_title + "**")
+                # st.video(interview_vid)
 
                 connection.commit()
             else:
@@ -340,10 +371,7 @@ def run():
         ad_user = st.text_input("Username")
         ad_password = st.text_input("Password", type='password')
         if st.button('Login'):
-            if (
-                (ad_user == 'briit' and ad_password == 'briit123')
-                or
-                (ad_user == 'Talha' and ad_password == 'talha123')):
+            if ((ad_user == 'Talha' and ad_password == 'talha123')):
 
                 st.success("Welcome Admin !")
                 # Display Data
@@ -362,19 +390,19 @@ def run():
                 
                 ## Pie chart for predicted field recommendations
 
-                field_counts = plot_data['Predicted_Field'].value_counts().reset_index()
-                field_counts.columns = ['Predicted_Field', 'Count']
+                # field_counts = plot_data['Predicted_Field'].value_counts().reset_index()
+                # field_counts.columns = ['Predicted_Field', 'Count']
 
-                st.subheader("**Pie-Chart for Predicted Field Recommendation**")
+                # st.subheader("**Pie-Chart for Predicted Field Recommendation**")
 
-                fig = px.pie(
-                    field_counts,
-                    values='Count',
-                    names='Predicted_Field',
-                    title='Predicted Field according to the Skills'
-                )
+                # fig = px.pie(
+                #     field_counts,
+                #     values='Count',
+                #     names='Predicted_Field',
+                #     title='Predicted Field according to the Skills'
+                # )
 
-                st.plotly_chart(fig)
+                # st.plotly_chart(fig)
 
                 
                

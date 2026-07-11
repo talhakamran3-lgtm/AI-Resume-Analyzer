@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Uploaded resumes
+Uploaded_Resumes/*.pdf
+Uploaded_Resumes/*.png
+
+# Generated reports
+report/
+
+# System files
+.DS_Store
+Thumbs.db
