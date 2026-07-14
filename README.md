@@ -79,10 +79,12 @@ AI-Resume-Analyzer/
 ## Screenshots
 
 ### User Dashboard
-(Add screenshot here)
+![Home Page](<Screenshot (295).png>)
 
 ### Resume Analysis
-(Add screenshot here)
+![Resume Uploaded](<Screenshot (300).png>)
+![Analysis Starts]](<Screenshot (312).png>)
+![Skill Extraction and ](<Screenshot (301).png>)
 
 ### Admin Dashboard
 (Add screenshot here)
